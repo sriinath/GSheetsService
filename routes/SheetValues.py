@@ -1,4 +1,5 @@
-from processes.datastore import DataStore
+import json
+from json.decoder import JSONDecodeError
 from falcon import HTTPServiceUnavailable, \
     HTTPInternalServerError, \
     HTTP_200, \
@@ -6,9 +7,9 @@ from falcon import HTTPServiceUnavailable, \
     HTTP_201, \
     HTTPPreconditionFailed, \
     HTTPUnprocessableEntity
+
 from routes.Base import Base
-import json
-from json.decoder import JSONDecodeError
+from processes.datastore import DataStore
 
 class SheetValues(Base):
     @staticmethod
@@ -105,8 +106,8 @@ class SheetValues(Base):
         except (HTTPServiceUnavailable, HTTPPreconditionFailed, HTTPError) as err:
             raise err
         except Exception as e:
-            print('Exception in getting spreadsheet info', e)
-            raise HTTPInternalServerError(description='Something went wrong while getting sheets info')
+            print('Exception in creating sheet', e)
+            raise HTTPInternalServerError(description='Something went wrong while creating sheet')
 
     def on_delete(self, req, resp, spreadsheet_id):
         sheet_id=req.get_param('sheet_id', required=True)
@@ -178,5 +179,5 @@ class SheetValues(Base):
         except (HTTPServiceUnavailable, HTTPPreconditionFailed, HTTPError) as err:
             raise err
         except Exception as e:
-            print('Exception in getting spreadsheet info', e)
-            raise HTTPInternalServerError(description='Something went wrong while getting sheets info')
+            print('Exception in updating sheet info', e)
+            raise HTTPInternalServerError(description='Something went wrong while updating sheet')

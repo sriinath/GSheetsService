@@ -1,5 +1,8 @@
 from falcon import HTTPInternalServerError, HTTPError
 from googleapiclient.errors import HttpError
+from secrets import token_urlsafe
+
+from processes.redis import Redis
 
 class Base:
     # run must be a function 
@@ -28,3 +31,15 @@ class Base:
         except Exception as err:
             print('Exception in getting spreadsheet info', err)
             raise HTTPInternalServerError(description='Something went wrong while getting sheets info')
+
+    def generate_token(self, nbytes=32):
+        return token_urlsafe(nbytes)
+
+    @property
+    def redis_client(self):
+        try:
+            return Redis.get_redis_client()
+        except Exception as err:
+            print('Exception while accessing redis client instance', err)
+
+    
