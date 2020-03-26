@@ -21,4 +21,8 @@ class DataStore:
         if DataStore.__service is not None:
             return DataStore.__service.spreadsheets()
         else:
-            raise Exception('Sheets v4 API Service is not available now')
+            try:
+                DataStore.connect_datastore()
+            except Exception as e:
+                print('Exception while configuring datastore', e)
+                raise Exception('Sheets v4 API Service is not available now')
