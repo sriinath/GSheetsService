@@ -6,7 +6,7 @@ class Redis:
     __redis=None
     @staticmethod
     def connect():
-        host=os.environ.get('REDIS_HOST')
+        host=os.environ.get('REDIS_URL')
         port=os.environ.get('REDIS_PORT')
         password=os.environ.get('REDIS_PASSWORD') or ''
         if host is not None and port is not None and password is not None:
