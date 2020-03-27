@@ -31,4 +31,12 @@ class Redis:
                 return  None
         except Exception as err:
             print('Redis connection is not valid', err)
-            return None
+            try:
+                Redis.connect()
+                if Redis.__redis.ping():
+                    return Redis.__redis
+                else:
+                    return None
+            except Exception as e:
+                print('Exception while connecting redis', e)
+                return None
