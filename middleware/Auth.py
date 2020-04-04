@@ -1,5 +1,5 @@
 import json
-from falcon import HTTPUnauthorized, HTTPBadRequest, HTTPInternalServerError
+from falcon import HTTPUnauthorized, HTTPBadRequest, HTTPInternalServerError, HTTPForbidden
 
 from processes.redis import Redis
 from config import ACCESS_TOKEN_VALIDATION_PATHS, AUTHENTICATION_VALIDATION_PATHS
@@ -27,7 +27,7 @@ class AuthMiddleware:
                                             if not redis_cli.exists(auth_info['access_token']):
                                                 raise HTTPUnauthorized(description='Access token is expired. Please login again and continue')
                                         else:
-                                            raise HTTPBadRequest(description='Access token is not valid.')
+                                            raise HTTPForbidden(description='Access token is not valid.')
                                     else:
                                         raise HTTPBadRequest(description='Access token is not valid.')
                                 else:

@@ -46,14 +46,18 @@ class SheetValues(Base):
         data_format=req.get_param('format')
         data_fields=req.get_param('fields')
         row_info=req.get_param_as_bool('row_info')
+
         try:
             spreadsheets=DataStore.get_sheet_instance()
         except Exception as e:
             print('Datastore is not configured properly', e)
             raise HTTPServiceUnavailable(description='Datastore is not configured properly')
         def run():
-            value=spreadsheets.values().get(spreadsheetId=spreadsheet_id, range=sheet_range).execute()
-            value=list(value['values'])
+            value=spreadsheets.values().batchGet(spreadsheetId=spreadsheet_id, ranges=json.loads(sheet_range)).execute()
+            value=value['valueRanges']
+            title_value=value[0]['values'] if 'values' in value[0] else []
+            data_value=value[1]['values'] if 'values' in value[1] else []
+            value=title_value + data_value
             response_data=[]
             if len(value):
                 if data_format=='raw':
