@@ -1,4 +1,5 @@
 import falcon
+import os
 from threading import Thread
 
 from processes.datastore import DataStore
@@ -42,6 +43,7 @@ data_store_thread.join()
 print('joined datastore')
 
 if __name__ == "__main__":
+    PORT=os.environ.get('PORT', 8000)
     from wsgiref import simple_server
-    httpd = simple_server.make_server('127.0.0.1', 8000, api)
+    httpd = simple_server.make_server('127.0.0.1', PORT, api)
     httpd.serve_forever()
