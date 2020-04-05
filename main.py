@@ -45,5 +45,5 @@ print('joined datastore')
 if __name__ == "__main__":
     PORT=os.environ.get('PORT', 8000)
     from wsgiref import simple_server
-    httpd = simple_server.make_server('127.0.0.1', int(PORT), api)
+    httpd = simple_server.make_server('0.0.0.0', int(PORT), api)
     httpd.serve_forever()
